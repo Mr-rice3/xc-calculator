@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行测分数计算</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        #shareText {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        #possibility {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .low {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .medium-low {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .medium {
+            background-color: #fff3e0;
+            color: #6c757d;
+        }
+
+        .medium-high {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .high {
+            background-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .excellent {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .clear-btn {
+            background-color: #ff4e42;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background-color: #e12d28;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>行测分数计算器</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>模块名称</th>
+                <th>正确题数</th>
+                <th>题数</th>
+                <th>操作</th>
+                <th>正确率 (%)</th>
+            </tr>
+        </thead>
+        <tbody id="modules">
+            <!-- 每一行都增加一个清空按钮 -->
+            <tr>
+                <td>常识判断</td>
+                <td><input type="number" id="correct1" min="0" value="0"></td>
+                <td>
+                    <select id="total1" onchange="selectTotal(1)">
+                        <option value="0">0</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                    </select>
+                    <input type="number" id="total1-input" min="0" value="0" oninput="inputTotal(1)">
+                </td>
+                <td><button class="clear-btn" onclick="clearInput(1)">清空</button></td>
+                <td id="accuracy1">-</td>
+            </tr>
+            <!-- 其他模块保持相同结构 -->
+            <tr>
+                <td>言语理解与表达</td>
+                <td><input type="number" id="correct2" min="0" value="0"></td>
+                <td>
+                    <select id="total2" onchange="selectTotal(2)">
+                        <option value="0">0</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                    </select>
+                    <input type="number" id="total2-input" min="0" value="0" oninput="inputTotal(2)">
+                </td>
+                <td><button class="clear-btn" onclick="clearInput(2)">清空</button></td>
+                <td id="accuracy2">-</td>
+            </tr>
+            <tr>
+                <td>数量关系</td>
+                <td><input type="number" id="correct3" min="0" value="0"></td>
+                <td>
+                    <select id="total3" onchange="selectTotal(3)">
+                        <option value="0">0</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                    </select>
+                    <input type="number" id="total3-input" min="0" value="0" oninput="inputTotal(3)">
+                </td>
+                <td><button class="clear-btn" onclick="clearInput(3)">清空</button></td>
+                <td id="accuracy3">-</td>
+            </tr>
+            <tr>
+                <td>判断推理</td>
+                <td><input type="number" id="correct4" min="0" value="0"></td>
+                <td>
+                    <select id="total4" onchange="selectTotal(4)">
+                        <option value="0">0</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                    </select>
+                    <input type="number" id="total4-input" min="0" value="0" oninput="inputTotal(4)">
+                </td>
+                <td><button class="clear-btn" onclick="clearInput(4)">清空</button></td>
+                <td id="accuracy4">-</td>
+            </tr>
+            <tr>
+                <td>资料分析</td>
+                <td><input type="number" id="correct5" min="0" value="0"></td>
+                <td>
+                    <select id="total5" onchange="selectTotal(5)">
+                        <option value="0">0</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                    </select>
+                    <input type="number" id="total5-input" min="0" value="0" oninput="inputTotal(5)">
+                </td>
+                <td><button class="clear-btn" onclick="clearInput(5)">清空</button></td>
+                <td id="accuracy5">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="btn" onclick="calculateScores()">计算分数</button>
+    <button class="btn" onclick="shareResults()">分享</button>
+
+    <div class="result" id="totalResult">
+        总题数：-<br>
+        总正确率：-
+    </div>
+
+    <div id="possibility"></div>
+
+    <div id="shareText"></div>
+
+    <script>
+        // 清空题数和正确数的输入框
+        function clearInput(index) {
+            const totalSelect = document.getElementById(`total${index}`);
+            const totalInput = document.getElementById(`total${index}-input`);
+            const correctInput = document.getElementById(`correct${index}`);
+
+            // 清空输入框并恢复初始状态
+            correctInput.value = 0;
+            totalSelect.value = 0;
+            totalInput.value = 0;
+
+            totalSelect.disabled = false;
+            totalInput.disabled = false;
+
+            // 更新正确率
+            document.getElementById(`accuracy${index}`).innerText = '-';
+        }
+
+        // 更新总题数（选择下拉框时）
+        function selectTotal(index) {
+            const select = document.getElementById(`total${index}`);
+            const input = document.getElementById(`total${index}-input`);
+            input.value = select.value;
+
+            if (select.value === "0" || input.value === "") {
+                input.disabled = false;
+                select.disabled = false;
+            } else {
+                input.disabled = true;
+                select.disabled = false;
+            }
+        }
+
+        // 同步输入框的值到下拉框（输入框发生变化时）
+        function inputTotal(index) {
+            const select = document.getElementById(`total${index}`);
+            const input = document.getElementById(`total${index}-input`);
+            select.value = input.value;
+
+            if (input.value === "0" || input.value === "") {
+                input.disabled = false;
+                select.disabled = false;
+            } else {
+                input.disabled = false;
+                select.disabled = true;
+            }
+        }
+
+        // 计算分数
+        function calculateScores() {
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+            let shareString = "";
+
+            for (let i = 1; i <= 5; i++) {
+                const correct = parseInt(document.getElementById(`correct${i}`).value) || 0;
+                const total = parseInt(document.getElementById(`total${i}`).value) || 0;
+
+                const accuracy = total > 0 ? ((correct / total) * 100).toFixed(2) : 0;
+                document.getElementById(`accuracy${i}`).innerText = total > 0 ? `${accuracy}%` : "-";
+
+                totalCorrect += correct;
+                totalQuestions += total;
+
+                shareString += `${document.querySelector(`#modules tr:nth-child(${i}) td:first-child`).textContent} ${correct}/${total} ${accuracy}%\n`;
+            }
+
+            const overallAccuracy = totalQuestions > 0 ? ((totalCorrect / totalQuestions) * 100).toFixed(2) : 0;
+            document.getElementById("totalResult").innerHTML = `总题数：${totalQuestions}<br>总正确率：${totalQuestions > 0 ? overallAccuracy + '%' : '-'}`;
+
+            let possibilityText = '';
+            let possibilityClass = '';
+            if (overallAccuracy < 60) {
+                possibilityText = '够呛能考上';
+                possibilityClass = 'low';
+            } else if (overallAccuracy >= 60 && overallAccuracy < 70) {
+                possibilityText = '运气好能考上';
+                possibilityClass = 'medium-low';
+            } else if (overallAccuracy >= 70 && overallAccuracy < 80) {
+                possibilityText = '一般来说能考上';
+                possibilityClass = 'medium';
+            } else if (overallAccuracy >= 80 && overallAccuracy < 90) {
+                possibilityText = '很可能考上';
+                possibilityClass = 'medium-high';
+            } else if (overallAccuracy >= 90 && overallAccuracy < 100) {
+                possibilityText = '不太可能考不上';
+                possibilityClass = 'high';
+            } else if (overallAccuracy == 100) {
+                possibilityText = '不可能';
+                possibilityClass = 'excellent';
+            }
+
+            document.getElementById('possibility').innerText = `${possibilityText}`;
+            document.getElementById('possibility').className = possibilityClass;
+
+            shareString += `总共 ${totalCorrect}/${totalQuestions} ${overallAccuracy}%`;
+            document.getElementById('shareText').innerText = shareString;
+        }
+
+        // 分享结果
+        function shareResults() {
+            const shareText = document.getElementById('shareText').innerText;
+            if (shareText) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('分享内容已复制到剪贴板！');
+                });
+            } else {
+                alert('请先计算分数！');
+            }
+        }
+    </script>
+</body>
+
+</html>
