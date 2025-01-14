@@ -10,14 +10,19 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 20px;
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        /* 确保表格在手机上也能流畅显示 */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            table-layout: fixed;
         }
 
+        /* 使表格的内容更适合小屏 */
         table,
         th,
         td {
@@ -28,17 +33,14 @@
         td {
             padding: 10px;
             text-align: center;
+            word-wrap: break-word;
         }
 
         th {
             background-color: #f4f4f4;
         }
 
-        .result {
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
+        /* 按钮样式 */
         .btn {
             padding: 10px 20px;
             background-color: #007BFF;
@@ -52,13 +54,13 @@
             background-color: #0056b3;
         }
 
-        #shareText {
+        /* 用于显示结果的样式 */
+        .result {
+            font-weight: bold;
             margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
         }
 
+        /* 可能性标签的样式 */
         #possibility {
             font-size: 18px;
             font-weight: bold;
@@ -98,6 +100,7 @@
             color: #0c5460;
         }
 
+        /* 其他按钮的样式 */
         .clear-btn {
             background-color: #ff4e42;
             color: white;
@@ -109,6 +112,78 @@
 
         .clear-btn:hover {
             background-color: #e12d28;
+        }
+
+        /* 响应式设计部分 */
+        @media (max-width: 768px) {
+
+            /* 将按钮和表格输入框适当缩小 */
+            .btn,
+            .clear-btn {
+                padding: 8px 16px;
+            }
+
+            /* 表格列宽调节，使其适应小屏 */
+            th,
+            td {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            /* 调整输入框宽度 */
+            input[type="number"],
+            select {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            /* 可能性显示部分字体稍小 */
+            #possibility {
+                font-size: 16px;
+            }
+
+            /* 清空按钮放到输入框旁边 */
+            td button {
+                margin-top: 10px;
+            }
+
+            /* 表格内容折叠显示 */
+            table {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            /* 使用flexbox使结果栏响应式布局 */
+            .result {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #shareText {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            /* 小屏幕下进一步压缩按钮、输入框等 */
+            .btn,
+            .clear-btn {
+                padding: 6px 12px;
+            }
+
+            /* 微调表格布局 */
+            th,
+            td {
+                padding: 6px;
+                font-size: 12px;
+            }
+
+            #possibility {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -292,6 +367,11 @@
                 const correct = parseInt(document.getElementById(`correct${i}`).value) || 0;
                 const total = parseInt(document.getElementById(`total${i}`).value) || 0;
 
+                if (correct > total) {
+                    alert(`正确题数不能大于总题数！`);
+                    return;
+                }
+
                 const accuracy = total > 0 ? ((correct / total) * 100).toFixed(2) : 0;
                 document.getElementById(`accuracy${i}`).innerText = total > 0 ? `${accuracy}%` : "-";
 
@@ -319,7 +399,7 @@
                 possibilityText = '很可能考上';
                 possibilityClass = 'medium-high';
             } else if (overallAccuracy >= 90 && overallAccuracy < 100) {
-                possibilityText = '不太可能考不上';
+                possibilityText = '肯定能考上';
                 possibilityClass = 'high';
             } else if (overallAccuracy == 100) {
                 possibilityText = '不可能';
